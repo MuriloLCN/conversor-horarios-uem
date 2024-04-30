@@ -32,6 +32,10 @@ document.getElementById('botao-conversao').addEventListener('click', () =>
     }
 );
 
+var inicio_s1 = undefined;
+var fim_s1 = undefined;
+var inicio_s2 = undefined;
+var fim_s2 = undefined;
 
 function converterPDFParaTexto(buffer)
 {
@@ -184,11 +188,12 @@ function parsearPrimeiraPagina(textoPrimeiraPagina)
         "
     */
     
-    pegarDadosLinhaDaTabela(primeira_linha);
-    pegarDadosLinhaDaTabela(segunda_linha);
-    pegarDadosLinhaDaTabela(terceira_linha);
-    pegarDadosLinhaDaTabela(quarta_linha);
-    pegarDadosLinhaDaTabela(quinta_linha);
+    // O zero aqui indica que é "adivinhado" que essa primeira página se refere ao primeiro semestre
+    pegarDadosLinhaDaTabela(primeira_linha, 0);
+    pegarDadosLinhaDaTabela(segunda_linha, 0);
+    pegarDadosLinhaDaTabela(terceira_linha, 0);
+    pegarDadosLinhaDaTabela(quarta_linha, 0);
+    pegarDadosLinhaDaTabela(quinta_linha, 0);
 }
 
 function parseIntermediario(textoPaginaIntermediaria)
@@ -229,14 +234,16 @@ function parseIntermediario(textoPaginaIntermediaria)
     let terceira_linha = partes[4];
     let quarta_linha = partes[5];
     let quinta_linha = partes[6];
-        
-    pegarDadosLinhaDaTabela(primeira_linha);
-    pegarDadosLinhaDaTabela(segunda_linha);
-    pegarDadosLinhaDaTabela(terceira_linha);
-    pegarDadosLinhaDaTabela(quarta_linha);
+    
+    // O um aqui significa que é "adivinhado" que a tabela se refere ao segundo semestre, caso seja encontrada alguma
+    // matéria anual
+    pegarDadosLinhaDaTabela(primeira_linha, 1);
+    pegarDadosLinhaDaTabela(segunda_linha, 1);
+    pegarDadosLinhaDaTabela(terceira_linha, 1);
+    pegarDadosLinhaDaTabela(quarta_linha, 1);
     if (quinta_linha.includes("|"))
     {
-        pegarDadosLinhaDaTabela(quinta_linha);
+        pegarDadosLinhaDaTabela(quinta_linha, 1);
     }
 }
 
@@ -336,7 +343,7 @@ class Evento
       /*
       dia -> 0: seg, 1: ter, 2: qua, 3: qui, 4: sex, 5: sab
       horario -> 0: 0745-0835, 1:0835-0925, ...
-      semestre -> 0, 1
+      semestre -> 0 = primeiro, 1 = segundo, 2 = anual
       */
       constructor(dia, horario, semestre)
       {
@@ -431,9 +438,19 @@ function atualizarMatrizesHorario()
             {
                 continue;
             }
+
+            let dt_inicio = dados["data_inicio"];
+            let dt_fim = dados["data_fim"];
+
+            if (dados["semestre"] == 2)
+            {
+                dt_inicio = inicio_s1;
+                dt_fim = fim_s1;
+            }
+
             matriz_de_horarios_s0[i][p].materia = dados["nome"];
-            matriz_de_horarios_s0[i][p].data_inicio = dados["data_inicio"];
-            matriz_de_horarios_s0[i][p].data_termino = dados["data_fim"];
+            matriz_de_horarios_s0[i][p].data_inicio = dt_inicio;
+            matriz_de_horarios_s0[i][p].data_termino = dt_fim;
         }
     }
 
@@ -447,9 +464,20 @@ function atualizarMatrizesHorario()
         {
             continue;
         }
+
+
+        let dt_inicio = dados["data_inicio"];
+        let dt_fim = dados["data_fim"];
+
+        if (dados["semestre"] == 2)
+        {
+            dt_inicio = inicio_s2;
+            dt_fim = fim_s2;
+        }
+
         matriz_de_horarios_s1[j][q].materia = dados["nome"];
-        matriz_de_horarios_s1[j][q].data_inicio = dados["data_inicio"];
-        matriz_de_horarios_s1[j][q].data_termino = dados["data_fim"];
+        matriz_de_horarios_s1[j][q].data_inicio = dt_inicio;
+        matriz_de_horarios_s1[j][q].data_termino = dt_fim;
         }
     }
 }
@@ -577,9 +605,13 @@ function pegarDadosMaterias(texto_materia)
             {
                 dados["semestre"] = 0;
             }
-            else
+            else if (partes[i].includes("2"))
             {
                 dados["semestre"] = 1;
+            }
+            else
+            {
+                dados["semestre"] = 2; // Materias anuais
             }
         }
         else if (i == tamanho - 5)
@@ -589,6 +621,31 @@ function pegarDadosMaterias(texto_materia)
         else
         {
             dados["nome"] = dados["nome"] + " " + partes[i];
+        }
+    }
+
+    if (dados["semestre"] == 0)
+    {
+        console.log("Matéria era do primeiro semestre");
+        if (inicio_s1 === undefined)
+        {
+            inicio_s1 = dados["data_inicio"];
+        }
+        if (fim_s1 === undefined)
+        {
+            fim_s1 = dados["data_fim"];
+        }
+    }
+    else if (dados["semestre"] == 1)
+    {
+        console.log("Matéria era do segundo semestre");
+        if (inicio_s2 === undefined)
+        {
+            inicio_s2 = dados["data_inicio"];
+        }
+        if (fim_s2 === undefined)
+        {
+            fim_s2 = dados["data_fim"];
         }
     }
 
@@ -671,7 +728,7 @@ function makeAsterisksSingle(pdf_text)
     return pdf_text;
 }
 
-function pegarDadosLinhaDaTabela(texto_da_linha)
+function pegarDadosLinhaDaTabela(texto_da_linha, chute_semestre)
 {
     /*
         Lê uma linha de uma ou duas tabelas de horários e atualiza a matriz de horários
@@ -751,6 +808,12 @@ function pegarDadosLinhaDaTabela(texto_da_linha)
             codigo = replaceAll(codigo, ' ', '').split('-')[0];
 
             let semestre = verificaSemestreMateria(codigo);
+
+            // Matérias anuais -> chutar semestre do qual a tabela se trata
+            if (semestre === 2)
+            {
+                semestre = chute_semestre;
+            }
             
             if (semestre == 0)
             {
@@ -832,7 +895,17 @@ function pegarDadosLinhaDaTabela(texto_da_linha)
         // Converte " 1234-4 " em só "1234" que é o código relevante
         codigo = replaceAll(codigo, ' ', '').split('-')[0];
 
+        if (codigo === '')
+        {
+            continue;
+        }
+
         let semestre = verificaSemestreMateria(codigo);
+
+        if (semestre === 2)
+        {
+            semestre = chute_semestre;
+        }
         
         if (semestre == 0)
         {
@@ -858,7 +931,17 @@ function pegarDadosLinhaDaTabela(texto_da_linha)
         // Converte " 1234-4 " em só "1234" que é o código relevante
         codigo = replaceAll(codigo, ' ', '').split('-')[0];
 
+        if (codigo === '')
+        {
+            continue;
+        }
+
         let semestre = verificaSemestreMateria(codigo);
+
+        if (semestre === 2)
+        {
+            semestre = chute_semestre;
+        }
 
         if (semestre == 0)
         {
