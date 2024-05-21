@@ -10,19 +10,34 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
         <style>
+            body {
+                font-family: 'Roboto', sans-serif;
+                background-color: #ffffff;
+                color: #333;
+            }
+            .header {
+                background-color: #151A22;
+                color: #F3F0E6;
+                padding: 20px;
+                text-align: center;
+            }
             .carousel-control-next,
             .carousel-control-prev,
             .carousel-indicators {
                 filter: invert(100%);
             }
+            .footer {
+                background-color: #151A22;
+                color: #F3F0E6;
+                padding: 15px;
+                text-align: center;
+            }
         </style>
     </head>
     <body style="background-color: #ffffff;">
-        <div style="width: 100%; color: #F3F0E6; background-color: #151A22; text-align: center;">
-            <br>
+        <header class="header">
             <h1>Conversor de horários da UEM</h1>
-            <br>
-        </div>
+        </header>
         <div style="width: 66%; margin: auto; text-align: center;"> 
 
             <br>
@@ -43,12 +58,12 @@
             </div>
 
             <div>
-                <h3 style="color: rgb(0, 8, 54);">Antes: </h3><br>
+                <h3 class="text-primary">Antes: </h3><br>
                 <img src="imagens/horario_pdf.png" style="width: 66%; box-shadow: 0px 0px 15px gray">
             </div>
             <br>
             <div>
-                <h3 style="color: rgb(0, 8, 54);">Depois: </h3><br>
+                <h3 class="text-primary">Depois: </h3><br>
                 <img src="imagens/horario_google.png" style="width: 66%; box-shadow: 0px 0px 15px gray">
             </div>
 
@@ -56,7 +71,7 @@
             <hr>
             <br>
             
-            <h3> Basta apenas seguir os <span style="color: rgb(0, 8, 54);">4 passos</span> a seguir: </h3>
+            <h3 class="text-primary"> Basta apenas seguir os 4 passos a seguir: </h3>
 
             <br>
 
@@ -70,7 +85,7 @@
                 <div class="carousel-inner" style="height: fit-content; padding: 40px 0px; box-shadow: 0px 0px 15px gray; border-radius: 15px; border-style: solid; border-width: 1px; border-color: black; background-color: white;">
                   <div class="carousel-item active">
                     <div style="width: 80%; margin: auto;">
-                        <h3 style="color: #002533; font-size: x-large;">Passo 1: Faça upload do arquivo do seu horário</h3>
+                        <h3 class="text-primary">Passo 1: Faça upload do arquivo do seu horário</h3>
                         <p>Basta apenas escolher o PDF que a UEM te manda com o seu horário clicando no botão abaixo</p>
                         <div style="background-color: rgb(107, 208, 255); border-radius: 10px; width: fit-content; padding: 10px; margin: auto;">
                             <input type="file" id="file-input" accept=".pdf">
@@ -79,7 +94,7 @@
                   </div>
                   <div class="carousel-item">
                     <div style="width: 80%; margin: auto;">
-                        <h3 style="color: #002533; font-size: x-large;">Passo 2: Gere o arquivo ICS para a agenda do Google</h3>
+                        <h3 class="text-primary">Passo 2: Gere o arquivo ICS para a agenda do Google</h3>
                         <p>O arquivo ICS é um formato de arquivos de calendários que pode ser importado na agenda do Google</p>
                         <div style=" background-color: lightgray; border-radius: 8px; padding: 2px; width: fit-content; margin: auto;">
                             <div class="form-check" style="text-align: center; margin: auto; width: fit-content;">
@@ -96,7 +111,7 @@
                   </div>
                   <div class="carousel-item">
                     <div style="width: 80%; margin: auto;">
-                        <h3 style="color: #002533; font-size: x-large;">Passo 3: Baixe o Excel gerado e confira se ele foi gerado corretamente</h3>
+                        <h3 class="text-primary">Passo 3: Baixe o Excel gerado e confira se ele foi gerado corretamente</h3>
                         <p>Como o conversor está em fase de testes, pode ser que o seu horário não consiga ser gerado corretamente,
                             então é sempre bom conferir se ele está certo.
                         </p>
@@ -106,7 +121,7 @@
                   </div>
                   <div class="carousel-item">
                     <div style="width: 80%; margin: auto;">
-                    <h3 style="color: #002533; font-size: x-large;">Passo 4: Importe o arquivo ICS gerado em sua agenda do google</h3>
+                    <h3 class="text-primary">Passo 4: Importe o arquivo ICS gerado em sua agenda do google</h3>
                     <p>Basta apenas ir na seção "Other calendars" no lado esquerdo da tela, clicar no '+' e em 'Import', em seguida
                         basta apenas selecionar o arquivo ICS e clicar em importar, e voilá! Seu horário estará em sua agenda.
                     </p>
