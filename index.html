@@ -1,176 +1,172 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content=""width=device-width, initial-scale="1.0">
-        <title>Conversor de horários UEM</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
-        <style>
-            body {
-                font-family: 'Roboto', sans-serif;
-                background-color: #ffffff;
-                color: #333;
-            }
-            .header {
-                background-color: #151A22;
-                color: #F3F0E6;
-                padding: 20px;
-                text-align: center;
-            }
-            .carousel-control-next,
-            .carousel-control-prev,
-            .carousel-indicators {
-                filter: invert(100%);
-            }
-            .footer {
-                background-color: #151A22;
-                color: #F3F0E6;
-                padding: 15px;
-                text-align: center;
-            }
-        </style>
-    </head>
-    <body style="background-color: #ffffff;">
-        <header class="header">
-            <h1>Conversor de horários da UEM</h1>
-        </header>
-        <div style="width: 66%; margin: auto; text-align: center;"> 
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Horários UEM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .tab-content {
+            background-color: white;
+            box-shadow: 0px 0px 15px gray;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .img-step {
+            width: 50%;
+            box-shadow: 0px 0px 10px lightgray;
+            margin: 15px 0;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin-top: auto;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .nav-tabs {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .nav-tabs .nav-link {
+            padding: 15px 25px;
+            color: #007bff;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .intro-text {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: #555;
+        }
+        .next-button {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
 
-            <br>
+<header>
+    <h1>Conversor de Horários UEM</h1>
+</header>
 
-            <div style="width: 100%">
-                <h4>
-                    Gostaria de não ter que decifrar os horários da UEM todo semestre? E que tal ter o seu horário sempre na palma da sua mão para facilitar o seu dia a dia?
-                    Se sim, você está no lugar certo!
-                </h4>
-            </div>
+<div class="container my-4">
+    <p class="intro-text">Bem-vindo ao conversor de horários da UEM! Aqui você pode transformar seu horário em um arquivo ICS compatível com o Google Agenda (e muitas outras) de forma simples e rápida. Basta apenas seguir os passos abaixo:</p>
 
-            <hr>
+    <!-- Navegação por abas -->
+    <ul class="nav nav-tabs justify-content-center mb-3" id="conversorTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="step1-tab" data-bs-toggle="tab" data-bs-target="#step1" type="button" role="tab" aria-controls="step1" aria-selected="true">Passo 1</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="step2-tab" data-bs-toggle="tab" data-bs-target="#step2" type="button" role="tab" aria-controls="step2" aria-selected="false">Passo 2</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="step3-tab" data-bs-toggle="tab" data-bs-target="#step3" type="button" role="tab" aria-controls="step3" aria-selected="false">Passo 3</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="step4-tab" data-bs-toggle="tab" data-bs-target="#step4" type="button" role="tab" aria-controls="step4" aria-selected="false">Passo 4</button>
+        </li>
+    </ul>
 
-            <div>
-                <h5> 
-                    Com o nosso conversor de horários, você pode automaticamente transcrever o seu PDF com o horário para um arquivo ICS e importá-lo diretamente em sua agenda do Google.
-                </h5>
-            </div>
-
-            <div>
-                <h3 class="text-primary">Antes: </h3><br>
-                <img src="imagens/horario_pdf.png" style="width: 66%; box-shadow: 0px 0px 15px gray">
-            </div>
-            <br>
-            <div>
-                <h3 class="text-primary">Depois: </h3><br>
-                <img src="imagens/horario_google.png" style="width: 66%; box-shadow: 0px 0px 15px gray">
-            </div>
-
-            <br>
-            <hr>
-            <br>
-            
-            <h3 class="text-primary"> Basta apenas seguir os 4 passos a seguir: </h3>
-
-            <br>
-
-            <div id="carrosselPassos" class="carousel slide">
-                <div class="carousel-indicators">
-                  <button type="button" data-bs-target="#carrosselPassos" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                  <button type="button" data-bs-target="#carrosselPassos" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                  <button type="button" data-bs-target="#carrosselPassos" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                  <button type="button" data-bs-target="#carrosselPassos" data-bs-slide-to="3" aria-label="Slide 4"></button>
-                </div>
-                <div class="carousel-inner" style="height: fit-content; padding: 40px 0px; box-shadow: 0px 0px 15px gray; border-radius: 15px; border-style: solid; border-width: 1px; border-color: black; background-color: white;">
-                  <div class="carousel-item active">
-                    <div style="width: 80%; margin: auto;">
-                        <h3 class="text-primary">Passo 1: Faça upload do arquivo do seu horário</h3>
-                        <p>Basta apenas escolher o PDF que a UEM te manda com o seu horário clicando no botão abaixo</p>
-                        <div style="background-color: rgb(107, 208, 255); border-radius: 10px; width: fit-content; padding: 10px; margin: auto;">
-                            <input type="file" id="file-input" accept=".pdf">
-                        </div>
-                    </div>
-                  </div>
-                  <div class="carousel-item">
-                    <div style="width: 80%; margin: auto;">
-                        <h3 class="text-primary">Passo 2: Gere o arquivo ICS para a agenda do Google</h3>
-                        <p>O arquivo ICS é um formato de arquivos de calendários que pode ser importado na agenda do Google</p>
-                        <div style=" background-color: lightgray; border-radius: 8px; padding: 2px; width: fit-content; margin: auto;">
-                            <div class="form-check" style="text-align: center; margin: auto; width: fit-content;">
-                                <input class="form-check-input" type="checkbox" value="" id="optativa">
-                                <label class="form-check-label" for="optativa">
-                                    A última tabela do meu horário é optativa
-                                </label>
-                            </div>
-                        </div>
-                        <br>
-                        <button id="botao-conversao" class="btn btn-primary">Gerar ICS</button>
-                        <textarea style="display: none;"> </textarea>
-                    </div>
-                  </div>
-                  <div class="carousel-item">
-                    <div style="width: 80%; margin: auto;">
-                        <h3 class="text-primary">Passo 3: Baixe o Excel gerado e confira se ele foi gerado corretamente</h3>
-                        <p>Como o conversor está em fase de testes, pode ser que o seu horário não consiga ser gerado corretamente,
-                            então é sempre bom conferir se ele está certo.
-                        </p>
-                        <p style="text-wrap: wrap;" id="log"></p>
-                        <button id="generateExcel" class="btn btn-success">Gerar Excel</button>
-                    </div>
-                  </div>
-                  <div class="carousel-item">
-                    <div style="width: 80%; margin: auto;">
-                    <h3 class="text-primary">Passo 4: Importe o arquivo ICS gerado em sua agenda do google</h3>
-                    <p>Basta apenas ir na seção "Other calendars" no lado esquerdo da tela, clicar no '+' e em 'Import', em seguida
-                        basta apenas selecionar o arquivo ICS e clicar em importar, e voilá! Seu horário estará em sua agenda.
-                    </p>
-                    <img src="imagens/exemplo_1.png" style="border-style: double; border-color: rgb(12, 0, 54); width: 350px; height: 350px;">
-                    <img src="imagens/exemplo_2.png" style="border-style: double; border-color: rgb(12, 0, 54); width: 350px; height: 350px;">
-                    <img src="imagens/exemplo_3.png" style="border-style: double; border-color: rgb(12, 0, 54); width: 704px; height: auto">
-                    </div>
-                  </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carrosselPassos" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true" style="color: black;"></span>
-                  <span class="visually-hidden">Volt</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carrosselPassos" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Próx</span>
-                </button>
-            </div>
-        
-            <br>
-            
-            <hr>
-
-            <div>
-                <h4>
-                Note que, como o conversor está em fase de testes, ele pode não gerar corretamente o seu horário,
-                pois ele tem algumas limitações quanto a matérias optativas e horários que não são integrais, bem como matérias anuais, uma
-                vez que mais testes são necessários. Caso o seu horário não tenha sido gerado corretamente,
-                por favor, me mande um email em <a href="mailto: ra129037@uem.br" style="color: rgb(21, 0, 91);">ra129037@uem.br</a> para que eu possa estar melhorando esse conversor, assim
-                mais pessoas poderão desfrutar dele =D
-                </h4>
-                
-                <br>
-
-                <h5>
-                    Este site é inteiramente client-side, nenhuma informação é retida nem armazenada nele.
-                </h5>
+    <!-- Conteúdo das abas -->
+    <div class="tab-content mt-3">
+        <!-- Passo 1 -->
+        <div class="tab-pane fade show active" id="step1" role="tabpanel" aria-labelledby="step1-tab" style="text-align: center;">
+            <h3 class="text-primary">Passo 1: Faça upload do arquivo do seu horário</h3>
+            <p>Escolha o PDF que a UEM te envia com o seu horário clicando no botão abaixo.</p>
+            <input type="file" id="file-input" accept=".pdf" class="btn btn-outline-primary" style="max-width: 100%;">
+            <div class="next-button">
+                <button class="btn btn-primary" onclick="goToNextTab('step2-tab')">Próximo</button>
             </div>
         </div>
 
-        <br>
-
-        <div style="background-color: #151A22; border-radius: 0px; margin-bottom: 0px; padding: 15px; text-align: center;">
-            <p style="color: #F3F0E6">Feito com carinho por alunos de computação &lt3 <br>
-            Esse site é de fonte aberta, link para o <a href="https://github.com/MuriloLCN/conversor-horarios-uem/tree/main" target="_blank">GitHub</a></p>
+        <!-- Passo 2 -->
+        <div class="tab-pane fade" id="step2" role="tabpanel" aria-labelledby="step2-tab" style="text-align: center;">
+            <h3 class="text-primary">Passo 2: Gere o arquivo ICS</h3>
+            <p>O arquivo ICS é um formato de calendários compatível com a agenda do Google, da Microsoft, e muitas outras.</p>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="optativa">
+                <label class="form-check-label" for="optativa">
+                    A última tabela do meu horário é optativa
+                </label>
+            </div>
+            <button id="botao-conversao" class="btn btn-primary mt-2">Gerar ICS</button>
+            <textarea style="display: none;"> </textarea>
+            <div class="next-button">
+                <button class="btn btn-primary" onclick="goToNextTab('step3-tab')">Próximo</button>
+            </div>
         </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-        <script src="script.js"></script>
-    </body>
+        <!-- Passo 3 -->
+        <div class="tab-pane fade" id="step3" role="tabpanel" aria-labelledby="step3-tab" style="text-align: center;">
+            <h3 class="text-primary">Passo 3: Baixe o Excel gerado e confira o seu horário</h3>
+            <p>Verifique se o horário foi gerado corretamente. Se não foi, não hesite em entrar em contato para que eu possa estar melhorando esse conversor</p>
+            <button id="generateExcel" class="btn btn-success">Gerar Excel</button>
+            <div class="next-button">
+                <button class="btn btn-primary" onclick="goToNextTab('step4-tab')">Próximo</button>
+            </div>
+        </div>
+
+        <!-- Passo 4 -->
+        <div class="tab-pane fade" id="step4" role="tabpanel" aria-labelledby="step4-tab" style="text-align: center;">
+            <h3 class="text-primary">Passo 4: Importe o ICS para o Google Agenda</h3>
+            <p>Siga as instruções abaixo para importar o arquivo ICS em sua agenda do Google.</p>
+            <img src="imagens/exemplo_1.png" style="border-style: double; border-color: rgba(255, 255, 255, 0); width: 100%; height: auto;">
+            <p class="text-center">1. Clique no botão "+" na seção "Outros Calendários".</p>
+            <hr>
+            <img src="imagens/exemplo_2.png" style="border-style: double; border-color: rgba(255, 255, 255, 0); width: 100%; height: auto;">
+            <p class="text-center">2. Selecione "Importar" e escolha o arquivo ICS.</p>
+            <hr>
+            <img src="imagens/exemplo_3.png" style="border-style: double; border-color: rgba(255, 255, 255, 0); width: 100%; height: auto">
+            <p class="text-center">3. Clique em "Importar" para concluir o processo.</p>
+            <!-- <img src="imagens/exemplo_1.png" class="img-step" alt="Instrução 1">
+            <img src="imagens/exemplo_2.png" class="img-step" alt="Instrução 2">
+            <img src="imagens/exemplo_3.png" class="img-step" alt="Instrução 3"> -->
+        </div>
+    </div>
+</div>
+
+<!-- Rodapé fixo -->
+<div class="footer">
+    <p>Feito com carinho por alunos de computação &lt3 <br>
+    Este site é de código aberto. <a href="https://github.com/MuriloLCN/conversor-horarios-uem/tree/main" target="_blank">GitHub</a></p>
+</div>
+
+<script>
+    function goToNextTab(nextTabId) {
+        const nextTab = new bootstrap.Tab(document.getElementById(nextTabId));
+        nextTab.show();
+    }
+</script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
 </html>
