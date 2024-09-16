@@ -18,3 +18,5 @@ O funcionamento do site é bem simples:
 3. (opcional) Aperte o botão de "Gerar Excel" para baixar uma planílha simples com o seu horário - inclusive algumas pessoas preferem ter em Excel do que na agenda do Google
 
 4. Importe o ICS gerado na agenda do Google, os passos mais detalhados estão no site
+
+Uma ideia para o futuro seria utilizar o login com o Google e a API do Calendar para colocar diretamente na agenda, mas por enquanto não tenho planos de fazer isso.
