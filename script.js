@@ -137,11 +137,6 @@ function parsearPrimeiraPagina(textoPrimeiraPagina)
 
     let partes = textoPrimeiraPagina.split("*");
 
-    // Como eu não sei se cada horário segue a mesma estrutura de um semestre por página, pode ser que algum horário noturno
-    // tenha as duas tabelas dos dois semestres em uma página só, então pra ficar seguro a ideia é fazer algo independente disso
-
-    // Mas é importante ver se existe algum horário fora desse padrão e se existir é só questão de adaptar
-
     /*
     Partes:
     0: Cabeçalho com nome e talz
@@ -150,8 +145,8 @@ function parsearPrimeiraPagina(textoPrimeiraPagina)
     3: Segunda linha das tabelas
     4: Terceira linha das tabelas
     5: Quarta linha das tabelas
-    6: [Possivel ou não] Quinta linha das tabelas -- aqui é importante checar se essa linha existe ou não
-    por causa que horários noturnos só tem quatro aulas e isso pode foder com a ordem do parse
+    6: [Possivel ou não] Quinta linha das tabelas -- aqui é importante checar se essa linha existe ou não,
+    por causa que horários noturnos só tem quatro aulas e isso pode comprometer a ordem do parse
 
     Horários normais:
     7: Tabelinha com códigos e matérias
@@ -626,7 +621,7 @@ function pegarDadosMaterias(texto_materia)
 
     if (dados["semestre"] == 0)
     {
-        console.log("Matéria era do primeiro semestre");
+        // console.log("Matéria era do primeiro semestre");
         if (inicio_s1 === undefined)
         {
             inicio_s1 = dados["data_inicio"];
@@ -638,7 +633,7 @@ function pegarDadosMaterias(texto_materia)
     }
     else if (dados["semestre"] == 1)
     {
-        console.log("Matéria era do segundo semestre");
+        // console.log("Matéria era do segundo semestre");
         if (inicio_s2 === undefined)
         {
             inicio_s2 = dados["data_inicio"];
