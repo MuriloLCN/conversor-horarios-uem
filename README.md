@@ -6,7 +6,7 @@ O link para o site funcionando é esse daqui: https://murilolcn.github.io/conver
 
 Algumas coisas ainda precisam melhorar pois há ainda algumas limitações, mas até o momento ele funciona bem. O site é bem simples, é simplesmente uma página estática HTML que roda o conversor em JS, nada chique.
 
-Esse projeto é um upgrade gigante em relação a versão antiga do conversor, que eu tinha feito em python em 2022, e - em tese - suporta mais tipos de horários. A UEM utiliza exatamente os mesmos tipos de horários desde os anos 80,
+Esse projeto é um upgrade gigante em relação a versão antiga do conversor, que eu tinha feito em python em 2022, e - em tese - suporta mais tipos de horários. A UEM utiliza exatamente os mesmos tipos de horários desde a queda do império romano,
 então não há grandes chances desse conversor precisar ser mudado drasticamente ou jogado fora tão cedo... (mas eu não reclamaria se eles atualizassem pra algo bonito ou direto na agenda)
 
 O funcionamento do site é bem simples:
