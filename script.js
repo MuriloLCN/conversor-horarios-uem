@@ -44,7 +44,6 @@ function converterPDFParaTexto(buffer)
     */
     pdfjsLib.getDocument({data: buffer}).promise.then(async function(pdf) {
         let numeroPaginas = pdf.numPages;
-        alert("Convertendo seu horário, aperte OK para continuar...");
         let textosPaginas = [];
 
         for (let i = 1; i <= numeroPaginas; i++)
@@ -249,7 +248,7 @@ function gerarMatrizDados()
     */
     try {
         let dados = [];
-        dados.push(["S1","Seg","Ter","Qua","Qui","Sex"]);
+        dados.push(["S1","Seg","Ter","Qua","Qui","Sex", "Sab"]);
         for (let i = 0; i < 15; i++)
         {
             let nova_linha = [];
@@ -268,7 +267,7 @@ function gerarMatrizDados()
             dados.push(nova_linha);
         }
         dados.push(["", "", "", "", "", "", ""]);
-        dados.push(["S2","Seg","Ter","Qua","Qui","Sex"]);
+        dados.push(["S2","Seg","Ter","Qua","Qui","Sex", "Sab"]);
         for (let i = 0; i < 15; i++)
         {
             let nova_linha = [];
@@ -297,38 +296,106 @@ function gerarMatrizDados()
 }
 
 document.getElementById("generateExcel").addEventListener("click", function() {
-    /*
-        Função chamada quando o botão de gerar Excel é clicado
-    */
+    try {
 
-    // Cria um novo workbook
-    var wb = XLSX.utils.book_new();
-    
-    // Pega os dados das matérias
-    let dados = gerarMatrizDados();
+        const dados = gerarMatrizDados();
+        if (!dados) return;
 
-    if (dados === undefined)
-    {
-    return;
+        const estilos = {
+            cabecalhoDias: {
+                fill: { fgColor: { rgb: "FFFF00" } },
+            },
+            colunaHorarios: {
+                fill: { fgColor: { rgb: "EEEEEE" } }
+            },
+            bordas: {
+                border: {
+                    top: { style: "thin", color: { rgb: "000000" } },
+                    bottom: { style: "thin", color: { rgb: "000000" } },
+                    left: { style: "thin", color: { rgb: "000000" } },
+                    right: { style: "thin", color: { rgb: "000000" } }
+                }
+            }
+        }
+
+        var ws = XLSX.utils.aoa_to_sheet(dados);
+        
+        ajustarLarguraColunas(ws, dados);
+        
+        aplicarEstilos(ws, dados, estilos);
+
+        exportarParaExcel(ws, "horario.xlsx");
+        
+    } catch (error) {
+        console.error("Erro ao gerar Excel:", error);
+        alert("Ocorreu um erro ao gerar o arquivo Excel.");
     }
+});
+
+function ajustarLarguraColunas(worksheet, dados) {
+    let objectMaxLen = [];
+
+    for (let col = 0; col < dados[0].length; col++) {
+        objectMaxLen[col] = 0;
+    }
+    for (let row = 0; row < dados.length; row++) {
+        for (let col = 0; col < dados[row].length; col++) {
+            const cellValue = dados[row][col] ? dados[row][col].toString().trim() : "";
+            
+            if (cellValue.length > objectMaxLen[col]) {
+                objectMaxLen[col] = cellValue.length + 6 ;
+            }
+        }
+    }
+
+    const larguras = objectMaxLen.map(w => { return { width: w } });
+
+    worksheet['!cols'] = larguras;
+}
+
+function aplicarEstilos(worksheet, dados, estilos) {
     
-    // Montando a worksheet
-    var ws = XLSX.utils.aoa_to_sheet(dados);
+    for (let linha = 0; linha < dados.length; linha++) {
+        const cell = worksheet[XLSX.utils.encode_cell({ r: linha, c: 0 })] || {};
+        if (dados[linha][0]) {
+            cell.s = { ...estilos.colunaHorarios, ...estilos.bordas };
+        }
+    }
 
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+    const linhasCabecalho = [0, dados.findIndex(row => row[0] === "S2")];
 
-    // Convertendo o workbook pra um buffer
-    var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      
-    // Criando blob
-    var blob = new Blob([wbout], { type: 'application/octet-stream' });
+    linhasCabecalho.forEach(linha => {
+        for (let col = 0; col < dados[linha].length; col++) {
+            const cell = worksheet[XLSX.utils.encode_cell({ r: linha, c: col })] || {};
+            cell.s = { ...estilos.cabecalhoDias, ...estilos.bordas };
+        }
+    });
 
-    // Criando o link para download do excel
-    var link = document.createElement("a");
+    linhasCabecalho.forEach(linhaCabecalho => {
+        const inicio = linhaCabecalho + 1;
+        const fim = Math.min(linhaCabecalho + 14, dados.length);
+        
+        for (let linha = inicio; linha <= fim; linha++) {
+            for (let col = 0; col < dados[linha].length; col++) {
+                const cell = worksheet[XLSX.utils.encode_cell({ r: linha, c: col })] || {};
+                cell.s = { ...(cell.s || {}), ...estilos.bordas };
+            }
+        }
+    });
+}
+
+function exportarParaExcel(worksheet, nomeArquivo) {
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, worksheet, "Horário");
+    
+    const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([buffer], { type: 'application/octet-stream' });
+    
+    const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "horario.xlsx";
+    link.download = nomeArquivo;
     link.click();
-  });
+}
 
 class Evento
 {
